@@ -1,0 +1,42 @@
+name: Deploy Terraform on Azure
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # Allows manual trigger
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    name: Deploy Azure Resources
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set Up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: latest
+
+      - name: Authenticate to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Initialize Terraform
+        run: terraform init
+
+      - name: Fetch User Input
+        run: |
+          curl -s https://forms.googleapis.com/v1/forms/1aMk37XEM9TVrfwethRZPYuCBZX8I_HQxDJZMNEN-tjA/responses/ACYDBNgOoNGiPY6S4ikCUYrP9RXbvFuvyh6CQNpYtzmXmJAyEmDhwKXUBROSNECeiJW90B8 -o input.json
+
+      - name: Apply Terraform Configuration
+        run: terraform apply -auto-approve
+
+      - name: Show Terraform Outputs
+        run: terraform output
