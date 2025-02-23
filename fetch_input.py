@@ -2,7 +2,7 @@ import json
 import requests
 
 # Google Apps Script API URL (replace with your URL)
-API_URL = "https://script.google.com/macros/s/AKfycbwREEWd0srlkiIUEe6gvW0Wd2_H_fOOdfP8B9qVS-m6ElFti2epHqtQ1HfLhgloJVTg/exec"
+API_URL = "https://script.google.com/macros/s/AKfycbyXdW6l0NW6Z-c7fw-EsdafjQV-FeH3m8zlMdiEXWvd8F7m03eIbKgq8rFC3opD4Tki/exec"
 
 # Fetch data from Google Forms responses
 response = requests.get(API_URL)
