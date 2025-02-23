@@ -1,9 +1,9 @@
-name: Deploy Terraform on Azure
+name: Deploy Terraform from Google Forms
 
 on:
   push:
-    branches:
-      - main
+    paths:
+      - "form-data.json"  # Trigger only when form-data.json is updated
   workflow_dispatch:  # Allows manual trigger
 
 permissions:
@@ -28,15 +28,9 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Initialize Terraform
-        run: terraform init
+      - name: Read Form Data
+        run: cat form-data.json  # Verify input
 
-      - name: Fetch User Input
-        run: |
-          curl -s https://forms.googleapis.com/v1/forms/1aMk37XEM9TVrfwethRZPYuCBZX8I_HQxDJZMNEN-tjA/responses/ACYDBNgOoNGiPY6S4ikCUYrP9RXbvFuvyh6CQNpYtzmXmJAyEmDhwKXUBROSNECeiJW90B8 -o input.json
-
-      - name: Apply Terraform Configuration
+      - name: Apply Terraform
         run: terraform apply -auto-approve
 
-      - name: Show Terraform Outputs
-        run: terraform output
